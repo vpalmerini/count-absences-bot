@@ -4,7 +4,7 @@ from django.views.decorators.csrf import csrf_exempt
 import requests
 from count_absences_bot.settings import token
 
-ngrok_url = 'https://ce792d3f.ngrok.io'
+ngrok_url = 'https://552f302a.ngrok.io'
 
 # url used as webhook for development stage
 url = '{}/{}'.format(ngrok_url, token)
