@@ -15,6 +15,19 @@ states = {
             '/codigo':'s4',
             'Código':'s4'
         }
+    },
+    's2':{
+        'next_state':
+        {
+            '/adicionar':'s5',
+            'Adicionar':'s5',
+            '/remover':'s6',
+            'Remover':'s6',
+            '/editar':'s7',
+            'Editar':'s7',
+            '/listar':'s8',
+            'Listar':'s8'
+        }
     }
 }
 
@@ -38,6 +51,18 @@ handlers = {
     'Disciplinas':{
         0:{
             'function':'courses',
+            'arguments':['chat_id']
+        }
+    },
+    '/adicionar':{
+        0:{
+            'function':'add_course_initials',
+            'arguments':['chat_id']
+        }
+    },
+    'Adicionar':{
+        0:{
+            'function':'add_course_initials',
             'arguments':['chat_id']
         }
     }

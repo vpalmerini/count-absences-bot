@@ -30,12 +30,12 @@ def main_menu(chat_id):
     response['parse_mode'] = 'Markdown'
     response['reply_markup'] = main_keyboard()
     response['text'] = """
-        *Menu Principal*
+    *Menu Principal*
 
-        *Comandos:*
-        /disciplinas - adicione/remova/edite disciplinas
-        /ajuda - ajuda luciano
-        /codigo - código fonte do bot
+    *Comandos:*
+    /disciplinas - adicione/remova/edite disciplinas
+    /ajuda - ajuda luciano
+    /codigo - código fonte do bot
     """
     requests.post(get_url('sendMessage'), data=response)
 
@@ -46,13 +46,33 @@ def courses(chat_id):
     response['parse_mode'] = 'Markdown'
     response['reply_markup'] = courses_keyboard()
     response['text'] = """
-        *Disciplinas*
+    *Disciplinas*
 
-        *Comandos*
-        /adicionar - adicione disciplinas
-        /remover - remova disciplinas já adicionadas
-        /editar - edite disciplinas já adicionadas
-        /listar - lista as displinas adicionadas
+    *Comandos*
+    /adicionar - adicione disciplinas
+    /remover - remova disciplinas já adicionadas
+    /editar - edite disciplinas já adicionadas
+    /listar - lista as displinas adicionadas
+    """
+    requests.post(get_url('sendMessage'), data=response)
+
+
+def add_course_initials(chat_id):
+    response = {}
+    response['chat_id'] = chat_id
+    response['parse_mode'] = 'Markdown'
+    response['text'] = """
+    *Adicionando Matéria*
+        
+    O bot precisa das seguintes informações:
+    - sigla da disciplina
+    - dias e horários de término das aulas
+    - nº de créditos
+
+    Primeiro digite a *sigla* da disciplina e pressione *Enviar*
+
+    *Exemplo*
+    MC102
     """
     requests.post(get_url('sendMessage'), data=response)
 
@@ -62,6 +82,6 @@ def invalid_command(chat_id):
     response['chat_id'] = chat_id
     response['parse_mode'] = 'Markdown'
     response['text'] = """
-        Eu não entendi esse comando :(
+    Eu não entendi esse comando :(
     """
     requests.post(get_url('sendMessage'), data=response)
