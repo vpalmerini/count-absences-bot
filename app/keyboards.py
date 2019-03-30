@@ -29,3 +29,17 @@ def courses_keyboard():
     reply_markup['one_time_keyboard'] = True
 
     return json.dumps(reply_markup)
+
+
+def add_course_again():
+    keyboard = [
+        ['Adicionar'],
+        ['Menu']
+    ]
+
+    reply_markup = {}
+    reply_markup['keyboard'] = keyboard
+    reply_markup['resize_keyboard'] = True
+    reply_markup['one_time_keyboard'] = True
+
+    return json.dumps(reply_markup)
