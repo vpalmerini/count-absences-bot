@@ -5,6 +5,7 @@
 __pycache__
 db.sqlite3
 media
+app/migrations/
 
 # Distribution / packaging
 .Python build/

@@ -66,6 +66,24 @@ states = {
             '/menu':'s2',
             'Menu':'s2'
         }
+    },
+    's6':{
+        'next_state':
+        {
+            '/input':'s6.1',
+        },
+        '/input':{
+            's6.1':'/delete_course'
+        }
+    },
+    's6.1':{
+        'next_state':
+        {
+            '/remover':'s6',
+            'Remover':'s6',
+            '/menu':'s2',
+            'Menu':'s2'
+        }
     }
 }
 
@@ -106,7 +124,7 @@ handlers = {
         }
     },
     '/codigo':{
-        0:{ 
+        0:{
             'function':'source_code',
             'arguments':['chat_id']
         }
@@ -141,9 +159,27 @@ handlers = {
             'arguments':['chat_id']
         }
     },
+    '/remover':{
+        0:{
+            'function':'remove_course',
+            'arguments':['sender']
+        }
+    },
+    'Remover':{
+        0:{
+            'function':'remove_course',
+            'arguments':['sender']
+        }
+    },
     '/store_course':{
         0:{
             'function': 'store_course',
+            'arguments': ['sender', 'input']
+        }
+    },
+    '/delete_course':{
+        0:{
+            'function': 'delete_course',
             'arguments': ['sender', 'input']
         }
     }

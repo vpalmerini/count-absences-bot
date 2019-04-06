@@ -19,7 +19,7 @@ class Chat(models.Model):
 class Course(models.Model):
     initials = models.CharField(max_length=8, primary_key=True)
     workload = models.IntegerField(default=4)
-    user = models.ManyToManyField('User')
+    user = models.ManyToManyField('User', related_name='courses')
     day = models.ManyToManyField('Day')
 
     def __str__(self):

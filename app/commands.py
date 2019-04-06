@@ -13,7 +13,6 @@ def execute_handlers(handlers, message, args):
         args_list = []
         for arg in arguments:
             args_list.append(args.get(arg))
-            print(args_list)
         globals()[function](*args_list)
 
 
@@ -118,13 +117,11 @@ def store_course(sender, input):
     user = User.objects.get(id=user_id)
 
     input = (''.join(input)).split()
-    print('input:', input)
 
     # course initials
     initials = input[0]
     # initials validation
     if (validate_course_initials(initials)):
-        print('course initials validated')
         course = Course(initials=initials)
         course.save()
         course.user.add(user)
@@ -133,7 +130,6 @@ def store_course(sender, input):
     workload = input[-1]
     # workload validation
     if (validate_course_workload(workload)):
-        print('course workload validated')
         course.workload = workload
         course.save()
 
@@ -163,6 +159,46 @@ def store_course(sender, input):
         Senão, volte para o menu inicial:
         /menu - menu inicial
     """
+    requests.post(get_url('sendMessage'), data=response)
+
+
+def remove_course(sender):
+    user_id = sender['id']
+    user = User.objects.get(id=user_id)
+
+    courses = list(user.courses.values())
+
+    response = {}
+    response['chat_id'] = user_id
+    response['reply_markup'] = generic_keyboard(courses, 'initials')
+    response['parse_mode'] = 'Markdown'
+    response['text'] = """
+        Atualmente, estas são as disciplinas que vc tem adicionadas
+        
+        Selecione 1 para removê-la da sua lista de disciplinas
+    """
+
+    requests.post(get_url('sendMessage'), data=response)
+
+
+def delete_course(sender, input):
+    user_id = sender['id']
+    user = User.objects.get(id=user_id)
+
+    try:
+        course = user.courses.get(initials=input)
+        course.delete()
+
+    response = {}
+    response['chat_id'] = user_id
+    response['reply_markup'] = remove_course_again()
+    response['parse_mode'] = 'Markdown'
+    response['text'] = """
+        *Disciplina removida!*
+
+        Agora vc pode remover outra disciplina ou voltar ao menu inicial
+    """
+
     requests.post(get_url('sendMessage'), data=response)
 
 
