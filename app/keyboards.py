@@ -17,10 +17,8 @@ def main_keyboard():
 
 def courses_keyboard():
     keyboard = [
-        ['Adicionar'],
-        ['Remover'],
-        ['Editar'],
-        ['Listar']
+        ['Adicionar', 'Remover'],
+        ['Editar', 'Listar'],
     ]
 
     reply_markup = {}
@@ -33,8 +31,7 @@ def courses_keyboard():
 
 def add_course_again():
     keyboard = [
-        ['Adicionar'],
-        ['Menu']
+        ['Adicionar', 'Menu'],
     ]
 
     reply_markup = {}
@@ -46,14 +43,26 @@ def add_course_again():
 
 def remove_course_again():
     keyboard = [
-        ['Remover'],
-        ['Menu']
+        ['Remover', 'Menu'],
     ]
 
     reply_markup = {}
     reply_markup['keyboard'] = keyboard
     reply_markup['resize_keyboard'] = True
     reply_markup['one_time_keyboard'] = True
+
+    return json.dumps(reply_markup)
+
+
+def back_menu_keyboard():
+    keyboard = [
+        ['Menu'],
+    ]
+
+    reply_markup = {}
+    reply_markup['keyboard'] = keyboard
+    reply_markup['resize_keyboard'] = True
+    reply_markup['one_time-keyboard'] = True
 
     return json.dumps(reply_markup)
 

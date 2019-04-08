@@ -188,7 +188,8 @@ def delete_course(sender, input):
     try:
         course = user.courses.get(initials=input)
         course.delete()
-
+    except:
+        print('whatever')
     response = {}
     response['chat_id'] = user_id
     response['reply_markup'] = remove_course_again()
@@ -198,6 +199,25 @@ def delete_course(sender, input):
 
         Agora vc pode remover outra disciplina ou voltar ao menu inicial
     """
+
+    requests.post(get_url('sendMessage'), data=response)
+
+
+def list_courses(sender):
+    user_id = sender['id']
+    user = User.objects.get(id=user_id)
+
+    courses = list(user.courses.values())
+    courses_str = [course['initials'] for course in courses]
+
+    response = {}
+    response['chat_id'] = user_id
+    response['reply_markup'] = back_menu_keyboard()
+    response['parse_mode'] = 'Markdown'
+    response['text'] = """
+    *Estas são as disciplinas que foram adicionadas por vc:*
+    {}
+    """.format('\n'.join(courses_str))
 
     requests.post(get_url('sendMessage'), data=response)
 

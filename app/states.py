@@ -63,8 +63,8 @@ states = {
         {
             '/adicionar':'s5',
             'Adicionar':'s5',
-            '/menu':'s2',
-            'Menu':'s2'
+            '/menu':'s1',
+            'Menu':'s1'
         }
     },
     's6':{
@@ -81,10 +81,17 @@ states = {
         {
             '/remover':'s6',
             'Remover':'s6',
-            '/menu':'s2',
-            'Menu':'s2'
+            '/menu':'s1',
+            'Menu':'s1'
         }
-    }
+    },
+    's8':{
+        'next_state':
+        {
+            '/menu':'s1',
+            'Menu':'s1'
+        }
+    },
 }
 
 handlers = {
@@ -174,13 +181,25 @@ handlers = {
     '/store_course':{
         0:{
             'function': 'store_course',
-            'arguments': ['sender', 'input']
+            'arguments':['sender', 'input']
         }
     },
     '/delete_course':{
         0:{
             'function': 'delete_course',
-            'arguments': ['sender', 'input']
+            'arguments':['sender', 'input']
+        }
+    },
+    '/listar':{
+        0:{
+            'function':'list_courses',
+            'arguments':['sender']
+        }
+    },
+    'Listar':{
+        0:{
+            'function':'list_courses',
+            'arguments':['sender']
         }
     }
 }
