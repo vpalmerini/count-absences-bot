@@ -85,6 +85,76 @@ states = {
             'Menu':'s1'
         }
     },
+    's7':{
+        'next_state':
+        {
+            '/input':'s7.1',
+        },
+        '/input':{
+            's7.1':'/edit_course_selected'
+        }
+    },
+    's7.1':{
+        'next_state':
+        {
+            'Nº de Faltas':'s7.2',
+            'Sigla':'s7.3',
+            'Dias e Horários':'s7.4',
+            'Nº de Créditos':'s7.5'
+        },
+    },
+    's7.2':{
+        'next_state':
+        {
+            '/input':'s7.6'
+        },
+        '/input':{
+            's7.6':'/edit_number_of_absences'
+        }
+    },
+    's7.3':{
+        'next_state':
+        {
+            '/input':'s7.7'
+        },
+        '/input':{
+            's7.7':'/edit_course_initials'
+        }
+    },
+    's7.4':{
+        'next_state':
+        {
+            '/input':'s7.8'
+        },
+        '/input':{
+            's7.8':'/edit_course_days_and_times'
+        }
+    },
+    's7.5':{
+        'next_state':
+        {
+            '/input':'s7.9'
+        },
+        '/input':{
+            's7.9':'/edit_course_workload'
+        }
+    },
+    's7.6':{
+        'next_state':
+        {
+            '/input':'s7.10'
+        },
+        '/input':{
+            's7.10':'/edit_number_of_absences'
+        }
+    },
+    's7.10':{
+        'next_state':
+        {
+            'Editar':'s7',
+            'Menu':'s1'
+        }
+    },
     's8':{
         'next_state':
         {
@@ -180,13 +250,13 @@ handlers = {
     },
     '/store_course':{
         0:{
-            'function': 'store_course',
+            'function':'store_course',
             'arguments':['sender', 'input']
         }
     },
     '/delete_course':{
         0:{
-            'function': 'delete_course',
+            'function':'delete_course',
             'arguments':['sender', 'input']
         }
     },
@@ -200,6 +270,66 @@ handlers = {
         0:{
             'function':'list_courses',
             'arguments':['sender']
+        }
+    },
+    '/editar':{
+        0:{
+            'function':'edit_course',
+            'arguments':['sender']
+        }
+    },
+    'Editar':{
+        0:{
+            'function':'edit_course',
+            'arguments':['sender']
+        }
+    },
+    '/edit_course_selected':{
+        0:{
+            'function':'edit_course_selected',
+            'arguments':['sender', 'input']
+        }
+    },
+    '/edit_course_option_selected':{
+        0:{
+            'function':'edit_course_option_selected',
+            'arguments':['sender', 'input']
+        }
+    },
+    '/edit_course_option_handler':{
+        0:{
+            'function':'edit_course_option_handler',
+            'arguments':['sender', 'input']
+        }
+    },
+    'Nº de Faltas':{
+        0:{
+            'function':'edit_number_of_absences',
+            'arguments':['sender']
+        }
+    },
+    '/edit_number_of_absences':{
+        0:{
+            'function':'edit_number_of_absences_handler',
+            'arguments':['sender', 'input']
+        }
+    },
+    'Sigla':{
+        0:{
+            'function':'edit_course_initials',
+            'arguments':['sender', 'input']
+        }
+    },
+    'Dias e Horários':{
+        0:{
+            'function':'edit_course_days_and_times',
+            'arguments':['sender', 'input']
+        }
+    },
+    'Nº de Créditos':{
+        0:{
+            'function':'edit_course_workload',
+            'arguments':['sender', 'input']
         }
     }
 }

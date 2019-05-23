@@ -54,6 +54,19 @@ def remove_course_again():
     return json.dumps(reply_markup)
 
 
+def edit_course_again():
+    keyboard = [
+        ['Editar', 'Menu'],
+    ]
+
+    reply_markup = {}
+    reply_markup['keyboard'] = keyboard
+    reply_markup['resize_keyboard'] = True
+    reply_markup['one_time_keyboard'] = True
+
+    return json.dumps(reply_markup)
+
+
 def back_menu_keyboard():
     keyboard = [
         ['Menu'],
@@ -67,13 +80,29 @@ def back_menu_keyboard():
     return json.dumps(reply_markup)
 
 
+def edit_course_options_keyboard():
+    keyboard = [
+        ['Nº de Faltas'],
+        ['Sigla'],
+        ['Dias e Horários'],
+        ['Nº de Créditos'],
+    ]
+
+    reply_markup = {}
+    reply_markup['keyboard'] = keyboard
+    reply_markup['resize_keyboard'] = True
+    reply_markup['one_time_keyboard'] = True
+
+    return json.dumps(reply_markup)
+
+
 def generic_keyboard(queryset_list, field):
     input_list = [element[field] for element in queryset_list]
     keyboard = [input_list[n:n+3] for n in range(0, len(input_list), 3)]
 
     reply_markup = {}
     reply_markup['keyboard'] = keyboard
-    reply_markup['resize_keyboard'] = False
+    reply_markup['resize_keyboard'] = True
     reply_markup['one_time_keyboard'] = True
 
     return json.dumps(reply_markup)

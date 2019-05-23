@@ -1,4 +1,4 @@
-from .models import User, Day, Time, Course
+from .models import User, Chat, Day, Time, Course
 from count_absences_bot.settings import token
 from .keyboards import *
 from webhook.views import get_url
@@ -8,6 +8,7 @@ def execute_handlers(handlers, message, args):
     f_handlers = handlers.get(message)
     for handler in f_handlers.values():
         function = handler['function']
+        print('\nFunction:' + function)
         arguments = handler['arguments']
 
         args_list = []
@@ -18,9 +19,12 @@ def execute_handlers(handlers, message, args):
 
 def store_user(sender):
     user_id = sender['id']
-    username = sender['username']
-    
-    user = User(id=user_id, username=username)
+    try:
+        username = sender['username']
+        user = User(id=user_id, username=username)
+    except:
+        # user doesn't have username
+        user = User(id=user_id)
     user.save()
 
 
@@ -69,7 +73,7 @@ def add_course_initials(chat_id):
     - dias e horários de término das aulas
     - nº de créditos
 
-    Primeiro digite a *sigla* da disciplina e pressione *Enviar*
+    *Exemplo:* MC102 terça 12h quinta 12h 6
 
     *Exemplo*
     MC102
@@ -164,10 +168,7 @@ def store_course(sender, input):
 
 def remove_course(sender):
     user_id = sender['id']
-    user = User.objects.get(id=user_id)
-
-    courses = list(user.courses.values())
-
+    courses = list_courses_as_values(user_id)
     response = {}
     response['chat_id'] = user_id
     response['reply_markup'] = generic_keyboard(courses, 'initials')
@@ -189,6 +190,7 @@ def delete_course(sender, input):
         course = user.courses.get(initials=input)
         course.delete()
     except:
+        # to be handled
         print('whatever')
     response = {}
     response['chat_id'] = user_id
@@ -220,6 +222,112 @@ def list_courses(sender):
     """.format('\n'.join(courses_str))
 
     requests.post(get_url('sendMessage'), data=response)
+
+
+def edit_course(sender):
+    user_id = sender['id']
+    courses = list_courses_as_values(user_id)
+
+    response = {}
+    response['chat_id'] = user_id
+    response['reply_markup'] = generic_keyboard(courses, 'initials')
+    response['parse_mode'] = 'Markdown'
+    response['text'] = """
+    Estas são as suas disciplinas!
+    Selecione uma para editá-la
+    """
+    requests.post(get_url('sendMessage'), data=response)
+
+
+def edit_course_selected(sender, input):
+    user_id = sender['id']
+    user = User.objects.get(id=user_id)
+    course = user.courses.get(initials=input)
+    print('course initials:' + course.initials)
+    chat = Chat.objects.get(id=user_id)
+    chat.data = course.initials
+    chat.save()
+    response = {}
+    response['chat_id'] = user_id
+    response['reply_markup'] = edit_course_options_keyboard()
+    response['parse_mode'] = 'Markdown'
+    response['text'] = """
+    Selecione o quê você quer editar!
+    """
+    requests.post(get_url('sendMessage'), data=response)
+
+
+def edit_number_of_absences(sender):
+    user_id = sender['id']
+    user = User.objects.get(id=user_id)
+    chat = Chat.objects.get(id=user_id)
+    course_initials = chat.data
+    course = user.courses.get(initials=course_initials)
+    absences = course.absences
+    response = {}
+    response['chat_id'] = user_id
+    response['parse_mode'] = 'Markdown'
+    response['text'] = """
+    O seu número atual de faltas é {}. Digite o número atualizado:
+    """.format(str(absences))
+    requests.post(get_url('sendMessage'), data=response)
+
+
+def edit_number_of_absences_handler(sender, input):
+    user_id = sender['id']
+    user = User.objects.get(id=user_id)
+    chat = Chat.objects.get(id=user_id)
+    course_initials = chat.data
+    course = User.courses.get(initials=course_initials)
+    course.absences = input
+    course.save()
+
+    response = {}
+    response['chat_id'] = user_id
+    response['reply_markup'] = edit_course_again()
+    response['parse_mode'] = 'Markdown'
+    response['text'] = """
+    Número de faltas atualizado com sucesso!
+    """
+    requests.post(get_url('sendMessage'), data=response)
+
+
+def edit_course_option_selected(sender, input):
+    user_id = sender['id']
+    user = User.objects.get(id=user_id)
+    chat = Chat.objects.get(id=user_id)
+    course_initials = chat.data
+    course = user.courses.get(initials=course_initials)
+    response = {}
+    response['chat_id'] = user_id
+    response['parse_mode'] = 'Markdown'
+
+    # if (input == 'Nº de Faltas'):
+    #     absences = course.absences
+    #     text = """O seu número atual de faltas é {}. Digite o número atualizado:""".format(absences)
+    #     #  
+
+    # elif (input == 'Sigla'):
+    #     initials = course.initials
+    #     text = """A sigla atual do desse curso é {}. Digite a sigla atualizada:""".format(initials)
+
+    # elif (input == 'Dias e Horários'):
+    #     print('Dias e Horários')
+
+    # elif (input == 'Nº de Créditos'):
+    #     workload = course.workload
+    #     text = """O número de créditos atual dessa disciplina é {}. Digite o número atualizado:""".format(workload)
+    
+    # else:
+    #     print('Opção Inválida')
+    
+    response['text'] = text
+    requests.post(get_url('sendMessage'), data=response)
+
+
+def list_courses_as_values(user_id):
+    user = User.objects.get(id=user_id)
+    return list(user.courses.values())
 
 
 def validate_course_initials(initials):

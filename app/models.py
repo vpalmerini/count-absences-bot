@@ -2,7 +2,7 @@ from django.db import models
 
 class User(models.Model):
     id = models.CharField(max_length=20, primary_key=True)
-    username = models.CharField(max_length=50)
+    username = models.CharField(max_length=50, blank=True)
 
     def __str__(self):
         return self.username
@@ -11,6 +11,7 @@ class User(models.Model):
 class Chat(models.Model):
     id = models.CharField(max_length=20, primary_key=True)
     state = models.CharField(max_length=5, default='s0')
+    data = models.CharField(max_length=20, default='')
 
     def __str__(self):
         return str(self.id)
@@ -19,6 +20,7 @@ class Chat(models.Model):
 class Course(models.Model):
     initials = models.CharField(max_length=8, primary_key=True)
     workload = models.IntegerField(default=4)
+    absences = models.IntegerField(default=0)
     user = models.ManyToManyField('User', related_name='courses')
     day = models.ManyToManyField('Day')
 

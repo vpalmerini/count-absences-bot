@@ -15,7 +15,7 @@ SECRET_KEY = '@kgj3=v!tsns3xo2!xbpn89#u1wqow&*))5&ljsnuy++7a3jeu'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['1138de6a.ngrok.io']
+ALLOWED_HOSTS = ['abf62e6b.ngrok.io']
 
 
 # Application definition
@@ -39,6 +39,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'count_absences_bot.urls'
